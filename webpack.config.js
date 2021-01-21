@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !isProd
@@ -21,8 +22,10 @@ const jsLoaders = () => {
     ]
 
     if(isDev) {
-        loaders.push('eslint-loader')
+       // loaders.push('eslint-loader')
     }
+
+
 
     return loaders
 }
@@ -31,7 +34,7 @@ module.exports = {
     context:path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: [
-        '@babel/polyfill',
+       /// '@babel/polyfill',
         './index.js'
     ],
     output: {
@@ -69,7 +72,8 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: filename('css')
-        })
+        }),
+       // new ESLintPlugin()
     ],
     module: {
         rules: [
@@ -84,8 +88,8 @@ module.exports = {
                 ],
             },
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
                 use: jsLoaders()
             }
         ],
