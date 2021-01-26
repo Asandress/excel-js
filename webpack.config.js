@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -8,6 +9,8 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !isProd
+
+console.log(process.env.NODE_ENV)
 
 const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
 
@@ -74,6 +77,9 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: filename('css')
         }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        })
        // new ESLintPlugin()
     ],
     module: {
